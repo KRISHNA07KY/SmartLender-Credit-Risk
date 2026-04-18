@@ -2,7 +2,30 @@
 
 An AI-driven credit risk intelligence system for smarter and safer lending decisions.
 
-SmartLender is transformed from a simple loan-approval demo into a production-oriented credit risk engine that estimates repayment risk, explains key drivers, and supports risk-aware decision-making via API and a decision dashboard UI. This README documents the system capabilities, API contract, code layout, and quick-run instructions for hackathon and fintech evaluation.
+SmartLender transforms a basic loan-approval demo into a production-ready credit risk engine that estimates repayment risk, surfaces key drivers, and helps lenders make faster, safer, and more consistent decisions via an API and a decision‑dashboard UI. This README documents the system capabilities, API contract, code layout, and quick-run instructions for hackathon and fintech evaluation.
+
+## Demo
+
+(Add screenshot here)
+
+## Problem Statement
+
+- Loan approval decisions are often manual and inconsistent across officers and branches, creating variability and potential bias.
+- Financial institutions struggle to estimate borrower repayment risk because borrower profiles are often incomplete and incomes can be volatile.
+- Poor risk assessment increases loan defaults, operational losses, and capital inefficiency — creating a practical need for reproducible repayment risk estimation.
+
+## Solution Overview
+
+- SmartLender predicts borrower repayment risk using supervised machine learning, producing probability-based risk scores rather than just binary labels.
+- The system returns a structured response containing a probability score, a human-readable risk level, top risk drivers, and a recommended action to support human reviewers.
+- This enables lenders to prioritize high-risk cases, standardize initial decisioning, and shorten time-to-decision while keeping human policy control in place.
+
+## Business Impact
+
+- Reduces loan default risk by surfacing high-risk applicants early for review or intervention.
+- Improves decision consistency and auditability across origination channels.
+- Enables scalable credit evaluation workflows for NBFCs and banks and supports fintech integrations for risk-based pricing.
+- Lowers operational costs associated with manual underwriting and post-disbursement collections.
 
 ## Production Upgrade Summary
 
