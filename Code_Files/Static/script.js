@@ -1,4 +1,4 @@
-document.getElementById('loanForm').addEventListener('submit', async function(e) {
+document.getElementById('loanForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const form = e.target;
@@ -7,7 +7,7 @@ document.getElementById('loanForm').addEventListener('submit', async function(e)
 
     formData.forEach((value, key) => {
         if (["ApplicantIncome", "CoapplicantIncome", "LoanAmount", "Loan_Amount_Term", "Credit_History"].includes(key)) {
-            data[key] = parseFloat(value);
+            data[key] = value === '' ? null : parseFloat(value);
         } else {
             data[key] = value;
         }
@@ -25,13 +25,28 @@ document.getElementById('loanForm').addEventListener('submit', async function(e)
             body: JSON.stringify(data)
         });
 
-        const result = await res.json();
+        const json = await res.json();
 
-        if (result.prediction) {
-            resultBox.innerHTML = `<h2>Loan Prediction: ${result.prediction}</h2>`;
-        } else {
-            resultBox.innerHTML = `<h2>Error: ${result.error}</h2>`;
+        if (json.error) {
+            resultBox.innerHTML = `<h2>Error: ${json.error}</h2>`;
+            return;
         }
+
+        const probPercent = Math.round((json.risk_probability || 0) * 100);
+        const level = json.risk_level || 'Unknown';
+        const colorClass = level.toLowerCase();
+
+        resultBox.innerHTML = `
+            <div class="result-card">
+                <h2>Decision: ${json.prediction}</h2>
+                <p><strong>Recommended action:</strong> ${json.recommended_action}</p>
+                <p><strong>Risk probability:</strong> ${probPercent}%</p>
+                <p><strong>Risk level:</strong> <span class="risk ${colorClass}">${level}</span></p>
+                <h3>Top risk drivers</h3>
+                <ul>${(json.risk_drivers || []).map(d => `<li>${d}</li>`).join('')}</ul>
+            </div>
+        `;
+
     } catch (err) {
         resultBox.innerHTML = `<h2>Request failed</h2>`;
     }

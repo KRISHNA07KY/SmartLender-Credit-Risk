@@ -94,3 +94,20 @@ a{
     color: white;
     text-align: center;
 }
+
+/* Dashboard/result card styles */
+.result-card{
+    background: #fff;
+    color: #111;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    max-width: 420px;
+    margin: 10px auto;
+    text-align: left;
+}
+.result-card h2{ margin: 0 0 8px 0; }
+.result-card p{ margin: 6px 0; }
+.risk.low{ color: green; font-weight: bold; }
+.risk.medium{ color: orange; font-weight: bold; }
+.risk.high{ color: red; font-weight: bold; }
