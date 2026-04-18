@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # SmartLender — Loan Approval (Credit Risk) Prediction
 
 SmartLender is an end-to-end machine learning project that predicts loan approval (credit risk) for applicants. It includes a trained Random Forest model wrapped by a small Flask API and a simple web frontend so users can interactively submit applicant data and receive approval predictions.
