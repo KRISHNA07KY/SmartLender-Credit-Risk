@@ -1,4 +1,4 @@
-# SmartLender — AI-driven Credit Risk Intelligence & Repayment Risk Estimation System
+# SmartLender - AI-driven Credit Risk Intelligence & Repayment Risk Estimation System
 
 An AI-driven credit risk intelligence system for smarter and safer lending decisions.
 
@@ -147,7 +147,3 @@ git add -A
 git commit -m "Upgrade: production-grade Credit Risk Intelligence (risk probs, explainability, modular)"
 git push
 ```
-
-## License & contact
-
-Provided for hackathon and educational use. For questions or collaboration, contact `smartlender@example.com`.
