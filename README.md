@@ -97,7 +97,4 @@ Response example:
 ## License & contact
 
 This repository is provided for educational purposes. For questions or collaboration, contact `smartlender@example.com`.
-=======
-# SmartLender-Credit-Risk
-An intelligent Credit Risk Engine that predicts loan defaults with 85% accuracy. Built with Scikit-learn and Flask to automate financial decision-making for banks.
->>>>>>> 0cff7d96b99ade5e2ebe7e7007331719f263121c
+
