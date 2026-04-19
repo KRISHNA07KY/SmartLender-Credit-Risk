@@ -1,172 +1,142 @@
-# SmartLender - AI-driven Credit Risk Intelligence & Repayment Risk Estimation System
+# SmartCareer — Placement Risk Engine for Education Loans
 
-An AI-driven credit risk intelligence system for smarter and safer lending decisions.
+AI-driven system linking career outcomes with loan repayment risk
 
-SmartLender transforms a basic loan-approval demo into a production-ready credit risk engine that estimates repayment risk, surfaces key drivers, and helps lenders make faster, safer, and more consistent decisions via an API and a decision‑dashboard UI. This README documents the system capabilities, API contract, code layout, and quick-run instructions for hackathon and fintech evaluation.
-
-## Demo
-
-(Add screenshot here)
+---
 
 ## Problem Statement
 
-- Loan approval decisions are often manual and inconsistent across officers and branches, creating variability and potential bias.
-- Financial institutions struggle to estimate borrower repayment risk because borrower profiles are often incomplete and incomes can be volatile.
-- Poor risk assessment increases loan defaults, operational losses, and capital inefficiency — creating a practical need for reproducible repayment risk estimation.
+- Education loans are often approved without visibility into the student's employability or placement timeline.
+- Placement delays and low starting salaries can lead directly to early repayment issues and higher delinquency rates.
+- Lenders currently lack readily available predictive tools to estimate a student's post-graduation employability and its impact on repayment.
+
+---
 
 ## Solution Overview
 
-- SmartLender predicts borrower repayment risk using supervised machine learning, producing probability-based risk scores rather than just binary labels.
-- The system returns a structured response containing a probability score, a human-readable risk level, top risk drivers, and a recommended action to support human reviewers.
-- This enables lenders to prioritize high-risk cases, standardize initial decisioning, and shorten time-to-decision while keeping human policy control in place.
+- Predicts placement probability at 3 / 6 / 12 months and estimates a plausible starting salary range.
+- Produces explainable risk outputs (probability, level, top drivers) tied to recommended actions for lenders.
+- Designed to support lender decision-making (human-in-the-loop): risk-based review, interventions, or adjusted pricing.
 
-## Business Impact
+---
 
-- Reduces loan default risk by surfacing high-risk applicants early for review or intervention.
-- Improves decision consistency and auditability across origination channels.
-- Enables scalable credit evaluation workflows for NBFCs and banks and supports fintech integrations for risk-based pricing.
-- Lowers operational costs associated with manual underwriting and post-disbursement collections.
+## What We Built (CRITICAL)
 
-## Production Upgrade Summary
+This is a working, demo-ready implementation intended to demonstrate a production approach. Key components:
 
-- Outputs probability-based risk (not only labels): `risk_probability` (0–1) and a `risk_level` (Low/Medium/High).
-- Lightweight explainability: returns top 3 `risk_drivers` per applicant using model importance + simple heuristics.
-- Business logic layer: `recommended_action` (Approve / Review Manually / Reject) derived from risk thresholds.
-- Extensible placeholders for placement‑risk modeling: `placement_risk_extension` includes mock employment probability and salary-range estimate.
-- Modular, maintainable code: `model_loader.py`, `predictor.py`, `utils/encoding.py`, `utils/risk_logic.py` keep the Flask app thin.
+- Random Forest model (deployed as a pickled artifact).
+- SMOTE used during training to mitigate class imbalance for delayed-placement cases.
+- Flask API exposing a `POST /predict` endpoint for inference.
+- Risk outputs returned per request: `prediction`, `risk_probability` (0–1), `risk_level` (Low/Medium/High), `risk_drivers` (top-3 explanations), and `recommended_action`.
 
-## System capabilities (what judges should look for)
+We avoid exaggerated claims — results shown in examples are demo/pilot estimates intended for validation with real data.
 
-- Risk probabilities and levels (deterministic thresholds):
-	- Low: risk_probability < 0.3
-	- Medium: 0.3 ≤ risk_probability ≤ 0.7
-	- High: risk_probability > 0.7
-- Structured JSON response containing: `prediction`, `risk_probability`, `risk_level`, `risk_drivers`, `recommended_action`, and `placement_risk_extension`.
-- Simple, auditable explainability (transparent heuristics + feature importances).
+---
 
-## API contract
+## System Architecture
 
-Endpoint: `POST /predict`
+Pipeline (conceptual):
 
-Request JSON (applicant features):
+Input → Preprocessing → Model → Risk Engine → Decision Layer → API / UI
 
-```json
-{
-	"Gender": "Male",
-	"Married": "Yes",
-	"Dependents": "0",
-	"Education": "Graduate",
-	"Self_Employed": "No",
-	"ApplicantIncome": 5000,
-	"CoapplicantIncome": 0,
-	"LoanAmount": 100,
-	"Loan_Amount_Term": 360,
-	"Credit_History": 1,
-	"Property_Area": "Urban"
-}
-```
+- Modular structure: `model_loader.py` (model lifecycle), `predictor.py` (inference + schema), `utils/encoding.py`, `utils/risk_logic.py`.
+- Explainability layer produces human-readable drivers; business rules map probabilities → recommended actions.
 
-Response JSON (structured):
+---
+
+## Features
+
+- Risk probability scoring (numeric 0–1) and risk level labels (Low/Medium/High).
+- Explainability: deterministic top‑3 drivers per case (model importances + heuristics).
+- Decision recommendation: simple business actions (Approve / Review / Reject).
+- Modular codebase enabling easy replacement of model or explainability method.
+
+---
+
+## Sample Output (JSON)
+
+Example API response (example/demo values):
 
 ```json
 {
-	"prediction": "Rejected",
-	"risk_probability": 0.82,
-	"risk_level": "High",
+	"prediction": "Placed",
+	"placement_probabilities": {"3m": 0.42, "6m": 0.78, "12m": 0.95},
+	"estimated_salary_range": "₹4,00,000 - ₹6,00,000",
+	"risk_probability": 0.21,
+	"risk_level": "Low",
 	"risk_drivers": [
-		"Low Credit History",
-		"High Loan Amount",
-		"Low Applicant Income"
+		"Low internships",
+		"CGPA below program median",
+		"Institute Tier: 3"
 	],
-	"recommended_action": "Reject",
-	"placement_risk_extension": {
-		"employment_probability": 0.4,
-		"salary_range_estimate": "2000-3000"
-	}
+	"recommended_action": "Approve — offer standard terms; suggest placement support",
+	"meta": {"model_version": "rf_v1_demo", "note": "example/demo values"}
 }
 ```
 
-Notes:
-- `risk_probability` is computed as `1 - P(approved)` using `predict_proba()` from the RandomForest model (deployed model class label `1` → approved).
-- `risk_drivers` are generated from model feature importances combined with simple domain heuristics for clear human-readable explanations.
+---
 
-## Explainability (how drivers are computed)
+## Tech Stack
 
-- The system uses a transparent, two-step method for per-case explanations:
-	1. Rank features by `model.feature_importances_` (when available).
-	2. Apply simple heuristics (e.g., low credit history, loan amount above median, applicant income below median) to generate human-friendly phrases.
+- Backend: Python, Flask
+- ML: scikit-learn (RandomForest), imbalanced-learn (SMOTE), NumPy, pandas
+- Frontend: simple static dashboard (HTML/CSS/JS) in `Code_Files/Static`
 
-This approach is intentionally lightweight and deterministic for hackathon judges; it is easy to replace with SHAP/LIME in a follow-up.
+---
 
-## Code layout (key files)
+## Run Locally
 
-- `Code_Files/flask_app.py` — thin Flask app (serves UI and `POST /predict`).
-- `Code_Files/model_loader.py` — centralized model loading logic.
-- `Code_Files/predictor.py` — prediction service: encodes input, calls model, computes probabilities, risk level, drivers, and recommended action.
-- `Code_Files/utils/encoding.py` — input schema and encoders.
-- `Code_Files/utils/risk_logic.py` — risk thresholds, driver heuristics, and placement-risk placeholder logic.
-- `Code_Files/Static/` — web UI (`index.html`, `script.js`, `style.css`) updated to a decision-dashboard view.
-- `Code_Files/loan_prediction.csv` — sample dataset used for development and medians used in heuristics.
+1. Ensure `Code_Files/model_randomforest.pkl` is in place. If missing, see notebooks in `Code_Files/` to retrain.
 
-## Model & evaluation
+2. Create and activate a virtual environment, then install dependencies:
 
-- Pipeline highlights: preprocessing, class-imbalance handling (SMOTE), model selection (Random Forest deployed, XGBoost experimented), cross-validation and metrics including ROC‑AUC and F1-score. Best observed ROC‑AUC in experiments: 0.87.
-- The deployable model file: `Code_Files/model_randomforest.pkl`. The Flask app lazily loads this file at runtime.
-
-## Run locally (quick)
-
-1. Ensure `Code_Files/model_randomforest.pkl` is present. If you do not have a model, use the notebooks in `Code_Files/` to retrain and save the model.
-2. Create a virtual environment and install runtime dependencies:
-
-```bash
+```powershell
 python -m venv venv
-# Windows
-venv\Scripts\activate
+venv\Scripts\Activate.ps1   # PowerShell
 pip install -r requirements.txt
 ```
 
-3. Start the Flask service:
+3. Start the API:
 
-```bash
+```powershell
 cd Code_Files
 python flask_app.py
+# Service listens on http://127.0.0.1:5000 by default
 ```
 
-4. Open the decision dashboard at `http://127.0.0.1:5000/` or POST to `/predict` programmatically.
+4. Example request (curl):
 
-## Quick smoke test (python)
-
-Run the following from repository root to exercise the `predictor` directly (uses `Code_Files` in `sys.path`):
-
-```python
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path.cwd() / 'Code_Files'))
-from predictor import predict
-
-sample = { ... }
-print(predict(sample))
+```bash
+curl -X POST http://127.0.0.1:5000/predict \
+	-H "Content-Type: application/json" \
+	-d '{"CGPA":7.2,"Internships":0,"Institute_Tier":3,"ApplicantIncome":4000}'
 ```
+
+---
 
 ## Limitations
 
-- Models are trained on a static sample dataset — production performance requires richer features and ongoing monitoring.
-- Not a real-time scoring pipeline; integration with streaming financial signals would be needed for live risk updates.
-- Explainability is lightweight (heuristics + importances); add SHAP/LIME for deeper attribution when required.
+- Models are trained on a demo dataset and results are pilot/estimated. Real-world performance requires richer data, validation, and monitoring.
+- Not designed as a real-time streaming scorer in the current form — integration work is required for live signals.
+- Explainability is intentionally lightweight (feature importances + heuristics); add SHAP/LIME for deeper attribution in production.
 
-## Future work & extension
+---
 
-- Integrate real-time data sources and credit bureau feeds for fresher risk estimates.
-- Add SHAP/LIME explainability and an interactive rationale panel for reviewers.
-- Extend to placement‑risk modeling: the repo includes a placeholder `placement_risk_extension` showing employment probability and salary estimate to demonstrate extensibility.
-- Add Dockerfile, CI, model versioning and monitoring for production readiness.
+## Future Scope
 
-## Contribution & Git
+- Integrate real placement data and credit bureau feeds for stronger signals and calibration.
+- Replace lightweight explainability with SHAP/LIME and add an interactive explanation panel.
+- Add CI, Docker, model versioning, and monitoring (data drift, performance alerts).
+- Pilot with lenders (1,000+ student cohort) to validate business impact and calibrate thresholds.
 
-- I updated the README to reflect the production-grade upgrade and pushed code changes to the repository. To reproduce locally:
+---
 
-```bash
-git add -A
-git commit -m "Upgrade: production-grade Credit Risk Intelligence (risk probs, explainability, modular)"
-git push
-```
+## Important Rules (documentation tone)
+
+- No emojis; keep language professional and human.
+- Avoid fake or unverified claims — label figures as `demo`, `estimated`, or `pilot-ready` where appropriate.
+- Use clear, concise bullets and prioritize transparency for judges and reviewers.
+
+---
+
+If you want, I can also add a short API reference and a sample `sample_request.json` in the repository.
