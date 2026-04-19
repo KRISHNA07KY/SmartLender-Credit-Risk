@@ -1,4 +1,4 @@
-# SmartCareer — Placement Risk Engine for Education Loans
+# SmartCareer — AI Placement Risk Engine for Education Loan Decisioning
 
 AI-driven system linking career outcomes with loan repayment risk
 
@@ -16,7 +16,15 @@ AI-driven system linking career outcomes with loan repayment risk
 
 - Predicts placement probability at 3 / 6 / 12 months and estimates a plausible starting salary range.
 - Produces explainable risk outputs (probability, level, top drivers) tied to recommended actions for lenders.
-- Designed to support lender decision-making (human-in-the-loop): risk-based review, interventions, or adjusted pricing.
+- Supports human-in-the-loop decisioning: risk-based alerts, targeted interventions, or risk-adjusted pricing.
+
+---
+
+## Why This Matters
+
+- Education lending has expanded rapidly, increasing institutional exposure to student outcomes.
+- Hiring markets are volatile and vary by discipline, region and economic cycle, adding uncertainty to repayment ability.
+- Incorporating employability signals provides forward-looking insight beyond parental credit history.
 
 ---
 
@@ -41,6 +49,14 @@ Input → Preprocessing → Model → Risk Engine → Decision Layer → API / U
 
 - Modular structure: `model_loader.py` (model lifecycle), `predictor.py` (inference + schema), `utils/encoding.py`, `utils/risk_logic.py`.
 - Explainability layer produces human-readable drivers; business rules map probabilities → recommended actions.
+
+---
+
+## Target Users
+
+- Banks / NBFCs offering education loans  
+- Risk & underwriting teams  
+- Fintech lending platforms
 
 ---
 
@@ -108,9 +124,37 @@ python flask_app.py
 
 ```bash
 curl -X POST http://127.0.0.1:5000/predict \
-	-H "Content-Type: application/json" \
-	-d '{"CGPA":7.2,"Internships":0,"Institute_Tier":3,"ApplicantIncome":4000}'
+		-H "Content-Type: application/json" \
+		-d '{"CGPA":7.2,"Internships":0,"Institute_Tier":3,"ApplicantIncome":4000}'
 ```
+
+---
+
+## Model Evaluation (Demo)
+
+- ROC-AUC: ~0.87 (example/demo value)
+- Placement prediction accuracy (3/6/12 months): demo estimates
+- Cross-validation used during training
+
+All metrics are based on a demo dataset and are intended for pilot validation, not production guarantees.
+
+---
+
+## Sample Output
+
+Example response from the system (demo data):
+
+```json
+{
+	"prediction": "Medium Risk",
+	"risk_probability": 0.62,
+	"risk_level": "Medium",
+	"risk_drivers": ["No internships", "Low CGPA", "Tier-3 college"],
+	"recommended_action": "Manual review with counseling support"
+}
+```
+
+This example is illustrative and generated from a demo dataset.
 
 ---
 
