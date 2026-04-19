@@ -1,4 +1,4 @@
-# SmartCareer — AI Placement Risk Engine for Education Loan Decisioning
+# SmartCareer - AI Placement Risk Engine for Education Loan Decisioning
 
 AI-driven system linking career outcomes with loan repayment risk
 
@@ -173,14 +173,3 @@ This example is illustrative and generated from a demo dataset.
 - Add CI, Docker, model versioning, and monitoring (data drift, performance alerts).
 - Pilot with lenders (1,000+ student cohort) to validate business impact and calibrate thresholds.
 
----
-
-## Important Rules (documentation tone)
-
-- No emojis; keep language professional and human.
-- Avoid fake or unverified claims — label figures as `demo`, `estimated`, or `pilot-ready` where appropriate.
-- Use clear, concise bullets and prioritize transparency for judges and reviewers.
-
----
-
-If you want, I can also add a short API reference and a sample `sample_request.json` in the repository.
