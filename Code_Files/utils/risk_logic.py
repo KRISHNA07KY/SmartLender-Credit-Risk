@@ -175,3 +175,112 @@ def placement_risk_extension(input_dict: Dict, stats: Dict) -> Dict:
     salary_range = f"{low}-{high}" if high > 0 else "unknown"
 
     return {'employment_probability': round(float(emp_prob), 2), 'salary_range_estimate': salary_range}
+
+
+def predict_placement_timeline(input_dict: Dict, stats: Dict) -> Dict:
+    """Lightweight placement-timeline predictor for demo and extensibility.
+
+    Returns a dictionary with example/demo probabilities for placement within
+    3, 6, and 12 months, a predicted salary range, a placement risk score,
+    suggested next actions, and a short AI summary. This is a deterministic
+    heuristic used as a placeholder for a full placement model.
+    """
+    # base score
+    score = 0.35
+
+    # applicant income influence
+    try:
+        ai = float(input_dict.get('ApplicantIncome', 0) or 0)
+    except Exception:
+        ai = 0.0
+    med_ai = stats.get('ApplicantIncome_median') or 0.0
+    if med_ai and ai >= med_ai:
+        score += 0.06
+
+    # internship signals
+    intern_dur = None
+    if 'InternshipDuration' in input_dict:
+        try:
+            intern_dur = float(input_dict.get('InternshipDuration') or 0)
+        except Exception:
+            intern_dur = None
+    elif 'Internship' in input_dict:
+        # boolean-like field
+        if str(input_dict.get('Internship')).strip().lower() in ('yes', 'true', '1'):
+            intern_dur = 3
+
+    if intern_dur and intern_dur >= 3:
+        score += 0.12
+    elif intern_dur and intern_dur > 0:
+        score += 0.06
+
+    # skill/cert signals
+    certs = input_dict.get('SkillCertifications') or input_dict.get('Certifications') or None
+    if certs:
+        if isinstance(certs, (list, tuple)) and len(certs) > 0:
+            score += 0.08
+        elif isinstance(certs, str) and certs.strip():
+            score += 0.05
+
+    # education signal
+    edu = str(input_dict.get('Education') or '').strip().lower()
+    if edu and 'graduate' in edu:
+        score += 0.03
+
+    # region / property area
+    if str(input_dict.get('Property_Area', '')).lower() == 'urban':
+        score += 0.03
+
+    # clamp score
+    if score < 0:
+        score = 0.0
+    if score > 0.95:
+        score = 0.95
+
+    # derive probabilities (monotonic)
+    prob_12 = round(min(0.99, score + 0.45), 3)
+    prob_6 = round(min(prob_12, score + 0.25), 3)
+    prob_3 = round(min(prob_6, score + 0.1), 3)
+
+    # salary estimate based on applicant income median (demo values)
+    base_salary = stats.get('ApplicantIncome_median') or 30000
+    low = int(max(1000, base_salary * (0.7 + score)))
+    high = int(max(low + 1000, base_salary * (1.1 + score)))
+
+    # placement risk score
+    placement_risk_score = 'Low'
+    if prob_12 < 0.5:
+        placement_risk_score = 'High'
+    elif prob_12 < 0.75:
+        placement_risk_score = 'Medium'
+
+    # suggested actions
+    actions = []
+    if placement_risk_score == 'High':
+        actions = ['Skill up recommendation', 'Resume & interview coaching', 'High-touch placement support']
+    elif placement_risk_score == 'Medium':
+        actions = ['Targeted skill modules', 'Resume review']
+    else:
+        actions = ['Standard placement follow-up']
+
+    # brief AI summary built from simple heuristics
+    drivers = []
+    if intern_dur is None or intern_dur == 0:
+        drivers.append('Low internship exposure')
+    if certs is None or (isinstance(certs, (list, tuple)) and len(certs) == 0):
+        drivers.append('Limited certifications')
+    if ai and med_ai and ai < med_ai:
+        drivers.append('Lower applicant income vs cohort')
+
+    ai_summary = ' + '.join(drivers) if drivers else 'No major negative signals detected (demo)'
+
+    return {
+        'probability_3_months': prob_3,
+        'probability_6_months': prob_6,
+        'probability_12_months': prob_12,
+        'predicted_salary_low': low,
+        'predicted_salary_high': high,
+        'placement_risk_score': placement_risk_score,
+        'suggested_actions': actions,
+        'ai_summary': ai_summary,
+    }

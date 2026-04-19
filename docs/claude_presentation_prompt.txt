@@ -1,0 +1,103 @@
+You are a senior ML systems engineer and product designer. Produce a professional, judge-focused PowerPoint presentation (PPTX) for a hackathon pitch titled:
+"AI‑powered Placement Risk Modeling — linking study‑abroad education loans to career success".
+
+Audience: hackathon judges, fintech product leads, NBFC decision makers. Tone: professional, concise, persuasive, human. No emojis.
+
+Deliverables (explicit):
+1. A downloadable .pptx named "PlacementRisk_Pitch.pptx" (12–15 slides).
+2. A slide‑by‑slide markdown outline included in the output (for review), containing:
+   - Slide title
+   - Exact slide text (headlines + bullet points)
+   - Speaker notes (3–5 sentences per slide)
+   - Suggested visuals (chart types, icons, mockup instructions)
+   - Suggested slide duration (seconds)
+3. One‑page judge summary (single slide) with 3 one‑line claims & suggested evidence items.
+4. A demo slide with a placeholder screenshot and instructions for a 2‑3 minute live demo.
+5. An appendix slide with data schema and sample mock rows (3 example student records) for demo charts.
+If you cannot create a .pptx file, produce the full slide content + speaker notes in a single downloadable markdown or structured JSON ready to convert into PPTX.
+
+Use the project spec below (include all content when designing slides):
+
+Project title & high-level problem
+- Problem Statement 1 — Linking Study Abroad Education Loan to Career Success Using AI
+- Problem: Design an AI-powered Placement Risk Modeling system for education loan borrowers. The system should predict how quickly a student is likely to secure a job after graduation/post-graduation, estimate expected starting salary, and identify applicants who may face delays that could impact their loan repayment ability.
+- Aim: Give lenders early visibility into employability risks so they can plan supportive interventions, reduce repayment stress, and improve portfolio outcomes.
+
+Detailed description & required forecasts
+- Predict placement probability at 3, 6 and 12 months after graduation.
+- Predict expected starting salary range for student’s field and institute.
+- Identify risk of delayed placement that may affect repayment capacity.
+- Use institute level trends, student level skills, industry hiring patterns, and optional real-time signals (job portal activity, interview pipeline) for predictions.
+- Keep the solution simple, explainable, and broadly usable across institutes, regions and course types.
+- Intended use: support lending decisions, portfolio monitoring, targeted student support programs (NOT to fully automate credit approvals).
+
+Judging criteria (explicit — reflect these in slides)
+1. Accuracy of placement time predictions (3/6/12 months) and salary estimates
+2. Clarity and explainability of risk drivers and model outputs
+3. Usefulness for lenders, including early alerts for high risk students
+4. Scalability across multiple institutes, courses, and job markets
+5. Impact potential (lowering early delinquencies, improving student outcomes)
+6. Robustness for varied programs, labor market conditions, and profiles
+
+Data format (to show on Data slide & appendix)
+1. Student Academic & Program Information (course type, year, CGPA, internships, certifications)
+2. Institute & Program Data (tier, historic placement rates, salary benchmarks, placement cell activity)
+3. Industry & Labor Market Indicators (job demand, region job density, sector trends, macroeconomics)
+4. Student Behavior & Real‑time Signals (job portal activity, interview pipeline, resume updates) — optional
+5. Outcome labels for training (placement at 3/6/12 months, actual starting salary, delay notes)
+
+Desired outputs / evaluation labels (for slides & sample visuals)
+- Placement timeline prediction (placed within 3/6/12 months; high risk of delayed placement)
+- Predicted salary range
+- Placement risk score (low/medium/high)
+- AI generated summary of risk drivers (e.g., “low internship exposure + weak field‑wise demand”)
+- Suggested next best action (skill up, resume improvement, mock interviews, recruiter match)
+- Reviewer outcome (for training & evaluation)
+
+Slide structure (required — follow or improve):
+1. Title slide (project title, team, hackathon name, date)
+2. One‑line tagline + 3‑line executive summary
+3. Demo (placeholder screenshot) + 2‑sentence demo instructions
+4. Problem Statement (use the given Problem text; quantify pain)
+5. Solution Overview (short bullets: what we predict, outputs, explainability, decisions)
+6. Data Inputs & Sources (table bullets; mention optional realtime signals)
+7. Model Approach & Architecture (high‑level pipeline diagram: features → modeling → outputs)
+8. Evaluation Metrics & Expected Performance (how you evaluate: 3/6/12 accuracy, ROC-AUC, calibration; use demo placeholder scores labeled “example/demo”)
+9. Explainability & Risk Drivers (how drivers are computed; example driver text)
+10. Decision Dashboard (UI mock: risk%, risk level color, top drivers, recommended action)
+11. Business Impact & Use Cases (lender workflows, interventions, ROI bullets)
+12. Implementation Plan & Timeline (MVP → production steps; 3 month timeline)
+13. Risks & Mitigations (data gaps, bias, drift, privacy)
+14. Ask & Next Steps (what you want from judges or partners — data, pilots, funding)
+15. Appendix: data schema + 3 sample rows + demo charts (placement probability bars, salary distribution, feature importances)
+
+Design & visual guidance:
+- Use corporate, fintech look: navy/dark blue + accent color (green/orange/red for risk).
+- Visuals to include:
+  - Bar chart: placement probability at 3/6/12 months (per example cohort)
+  - Horizontal bar: top 8 feature importances
+  - Gauge or progress bar: risk_probability → risk_level color
+  - Small table: sample student records (3 rows)
+  - Gantt: high level implementation timeline
+- Provide exact chart labels, suggested sample numbers (where needed) and short instructions to create charts from the sample data.
+
+Speaker notes & demo guidance:
+- For each slide include 3–5 sentences for the presenter, key message + exact call-to-action for judges.
+- Add a 2–3 minute demo script: what to show (dashboard, click a student, show risk drivers + suggested action), how to narrate.
+
+Judges summary slide:
+- 3 one-line claims that map to judging criteria (e.g., "Accurate timeline forecasts; explainable drivers; actionable integrations") and 3 bullets of evidence supporting each claim (metrics, demo, data sources).
+
+Formatting & constraints:
+- Keep text concise and scannable: slide headlines and 3–6 bullets.
+- Avoid technical overload: keep diagrams conceptual (one architecture slide can show components).
+- Mark any example numbers clearly as “example/demo values”.
+- Ensure a professional layout, and include suggested speaker notes.
+
+Output instructions for Claude:
+- First produce the slide‑by‑slide outline with speaker notes and visual instructions.
+- Then generate the actual .pptx file (PlacementRisk_Pitch.pptx). If you cannot generate .pptx directly, export slides as high‑resolution PNGs and provide a downloadable ZIP + the slide outline.
+- Provide a one‑slide judges summary and an appendix with data schema + sample rows in the deck.
+- Provide a short 1‑paragraph “How to run the demo” note at the end.
+
+Finish by asking: "If you need sample datasets or mock CSV rows, reply 'I need sample rows' and I will paste them." 

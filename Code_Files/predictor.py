@@ -8,6 +8,7 @@ from utils.risk_logic import (
     recommend_action,
     generate_risk_drivers,
     placement_risk_extension,
+    predict_placement_timeline,
 )
 
 
@@ -65,6 +66,8 @@ def predict(input_dict: Dict):
 
     # placement-risk placeholder
     placement = placement_risk_extension(input_dict, stats)
+    # richer placement predictions (3/6/12 months + salary + risk score)
+    placement_preds = predict_placement_timeline(input_dict, stats)
 
     return {
         'prediction': prediction,
@@ -73,4 +76,5 @@ def predict(input_dict: Dict):
         'risk_drivers': risk_drivers,
         'recommended_action': recommended,
         'placement_risk_extension': placement,
+        'placement_predictions': placement_preds,
     }
