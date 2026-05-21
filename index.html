@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Lender</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>Smart Lender</h1>
+</div>
+
+<form id="loanForm">
+    <div class="card">
+        <div class="card0">
+            <label>Gender</label>
+            <label>Married</label>
+            <label>Dependents</label>
+            <label>Education</label>
+            <label>Self Employed</label>
+            <label>Applicant Income</label>
+            <label>Coapplicant Income</label>
+            <label>Loan Amount</label>
+            <label>Loan Amount Term</label>
+            <label>Credit History</label>
+            <label>Property Area</label>
+        </div>
+
+        <div class="card1">
+            <select name="Gender" required>
+                <option value="">-</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <select name="Married" required>
+                <option value="">-</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <select name="Dependents" required>
+                <option value="">-</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3+">3+</option>
+            </select>
+
+            <select name="Education" required>
+                <option value="">-</option>
+                <option value="Graduate">Graduate</option>
+                <option value="Not Graduate">Not Graduate</option>
+            </select>
+
+            <select name="Self_Employed" required>
+                <option value="">-</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <input type="text" name="ApplicantIncome" placeholder="Applicant Income" required>
+            <input type="text" name="CoapplicantIncome" placeholder="Coapplicant Income" required>
+            <input type="text" name="LoanAmount" placeholder="Loan Amount" required>
+            <input type="text" name="Loan_Amount_Term" placeholder="Loan Amount Term" required>
+
+            <select name="Credit_History" required>
+                <option value="">-</option>
+                <option value="1">1</option>
+                <option value="0">0</option>
+            </select>
+
+            <select name="Property_Area" required>
+                <option value="">-</option>
+                <option value="Urban">Urban</option>
+                <option value="Semiurban">Semiurban</option>
+                <option value="Rural">Rural</option>
+            </select>
+        </div>
+
+        <div class="card2">
+            <input type="submit" value="Submit">
+        </div>
+    </div>
+</form>
+
+<div class="result" id="resultBox"></div>
+
+<div class="footer">
+    <h2>Contact Us</h2>
+    <p>Email: smartlender@example.com</p>
+    <p>Phone: +91-1234567890</p>
+    <p>
+        <a href="#">Instagram</a> |
+        <a href="#">Twitter</a> |
+        <a href="#">LinkedIn</a>
+    </p>
+</div>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>
