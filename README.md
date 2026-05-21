@@ -1,8 +1,7 @@
-# SmartCareer — AI Placement Risk Engine for Education Loan Decisioning
+# SmartCareer - AI Placement Risk Engine for Education Loan Decisioning
 
 AI-driven system linking career outcomes with loan repayment risk
 
----
 
 ## Problem Statement
 
@@ -10,7 +9,6 @@ AI-driven system linking career outcomes with loan repayment risk
 - Placement delays and low starting salaries can lead directly to early repayment issues and higher delinquency rates.
 - Lenders currently lack readily available predictive tools to estimate a student's post-graduation employability and its impact on repayment.
 
----
 
 ## Solution Overview
 
@@ -18,15 +16,12 @@ AI-driven system linking career outcomes with loan repayment risk
 - Produces explainable risk outputs (probability, level, top drivers) tied to recommended actions for lenders.
 - Supports human-in-the-loop decisioning: risk-based alerts, targeted interventions, or risk-adjusted pricing.
 
----
 
 ## Why This Matters
 
 - Education lending has expanded rapidly, increasing institutional exposure to student outcomes.
 - Hiring markets are volatile and vary by discipline, region and economic cycle, adding uncertainty to repayment ability.
 - Incorporating employability signals provides forward-looking insight beyond parental credit history.
-
----
 
 ## What We Built (CRITICAL)
 
@@ -39,7 +34,6 @@ This is a working, demo-ready implementation intended to demonstrate a productio
 
 We avoid exaggerated claims — results shown in examples are demo/pilot estimates intended for validation with real data.
 
----
 
 ## System Architecture
 
@@ -50,7 +44,6 @@ Input → Preprocessing → Model → Risk Engine → Decision Layer → API / U
 - Modular structure: `model_loader.py` (model lifecycle), `predictor.py` (inference + schema), `utils/encoding.py`, `utils/risk_logic.py`.
 - Explainability layer produces human-readable drivers; business rules map probabilities → recommended actions.
 
----
 
 ## Target Users
 
@@ -58,7 +51,6 @@ Input → Preprocessing → Model → Risk Engine → Decision Layer → API / U
 - Risk & underwriting teams  
 - Fintech lending platforms
 
----
 
 ## Features
 
@@ -67,7 +59,6 @@ Input → Preprocessing → Model → Risk Engine → Decision Layer → API / U
 - Decision recommendation: simple business actions (Approve / Review / Reject).
 - Modular codebase enabling easy replacement of model or explainability method.
 
----
 
 ## Sample Output (JSON)
 
@@ -90,15 +81,12 @@ Example API response (example/demo values):
 }
 ```
 
----
-
 ## Tech Stack
 
 - Backend: Python, Flask
 - ML: scikit-learn (RandomForest), imbalanced-learn (SMOTE), NumPy, pandas
 - Frontend: simple static dashboard (HTML/CSS/JS) in `Code_Files/Static`
 
----
 
 ## Run Locally
 
@@ -173,14 +161,3 @@ This example is illustrative and generated from a demo dataset.
 - Add CI, Docker, model versioning, and monitoring (data drift, performance alerts).
 - Pilot with lenders (1,000+ student cohort) to validate business impact and calibrate thresholds.
 
----
-
-## Important Rules (documentation tone)
-
-- No emojis; keep language professional and human.
-- Avoid fake or unverified claims — label figures as `demo`, `estimated`, or `pilot-ready` where appropriate.
-- Use clear, concise bullets and prioritize transparency for judges and reviewers.
-
----
-
-If you want, I can also add a short API reference and a sample `sample_request.json` in the repository.
